@@ -34,7 +34,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private MenuBar menuBar = new MenuBar();
+	private MenuBar menuBar = new MenuBar(this);
 
 	private TopPanel topPanel = new TopPanel();
 
@@ -188,17 +188,17 @@ public class MainWindow extends JFrame implements ActionListener {
 									+ ld.getFiles()[i].getName());
 							continue;
 						} catch (FileNotFoundException e) {
-							System.out.println("FileNotFoundException (Process can not open file) -" + path + "\\"
+							System.out.println("FileNotFoundException (Process can not open file) - " + path + "\\"
 									+ ld.getFiles()[i].getName());
 							continue;
 						} catch (LeftoverDataException e) {
-							System.out.println("LeftoverDataException (Left 1/X bytes remaining still to be read) -"
+							System.out.println("LeftoverDataException (Left 1/X bytes remaining still to be read) - "
 									+ path + "\\" + ld.getFiles()[i].getName());
 							continue;
 						} catch (EncryptedDocumentException e) {
 							System.out.println(
-									"EncryptedDocumentException (Encryption not supported for Old Excel files) -" + path
-											+ "\\" + ld.getFiles()[i].getName());
+									"EncryptedDocumentException (Encryption not supported for Old Excel files) - "
+											+ path + "\\" + ld.getFiles()[i].getName());
 							continue;
 						} catch (IllegalArgumentException e) {
 							/*
@@ -221,7 +221,7 @@ public class MainWindow extends JFrame implements ActionListener {
 							continue;
 						} catch (POIXMLException e) {
 							System.out.println(
-									"POIXMLException (Strict OOXML isn't currently supported, please see bug #57699) -"
+									"POIXMLException (Strict OOXML isn't currently supported, please see bug #57699) - "
 											+ path + "\\" + ld.getFiles()[i].getName());
 							continue;
 						} catch (Exception e) {
@@ -263,57 +263,56 @@ public class MainWindow extends JFrame implements ActionListener {
 		if (source == bottomPanel.getStartButton()) {
 			// TODO
 			String textMessage = "", textTitle = "";
-
 			boolean error = false, question = false, warning = false;
-
 			if (topPanel.getCurrentWorkDirField().equals("No Directory Selected")) {
 				error = true;
 				textMessage += "No Directory Selected!\n";
-				textTitle = "ERROR";
+				textTitle = "Error";
 			}
-
 			if (bottomPanel.getSearchStringField().equals("")) {
 				error = true;
 				textMessage += "No Search String!\n";
-				textTitle = "ERROR";
+				textTitle = "Error";
 			}
-
 			if (error) {
 				JOptionPane.showMessageDialog(this, textMessage, textTitle, JOptionPane.ERROR_MESSAGE);
 				return;
 			} else if (warning) {
-
+				// TODO
 			} else if (question) {
-
+				// TODO
 			}
-
 			centerPanel.clear();
 			DefaultMutableTreeNode node = centerPanel.addObject(null, topPanel.getCurrentWorkDirField());
-			findFilesAndDirectories(topPanel.getCurrentWorkDirField(), node);
+			boolean result = findFilesAndDirectories(topPanel.getCurrentWorkDirField(), node);
+			if (!result) {
+				JOptionPane.showMessageDialog(this, "No results found!", "", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
 		} else if (source == bottomPanel.getOpenButton()) {
-
 			String filePath = null;
-
+			int index = 0;
 			try {
 				filePath = centerPanel.getCurrentNode();
+				index = filePath.lastIndexOf(".");
 			} catch (NullPointerException g) {
-				System.out.println("ERROR CenerPanel - NullPointerException");
+				JOptionPane.showMessageDialog(this, "No file selected!", "Warning", JOptionPane.WARNING_MESSAGE);
+				return;
 			} catch (Exception g) {
-				System.out.println("uNDENTIFIED ERROR");
+				System.out.println("UNDENTIFIED ERROR");
 				g.printStackTrace();
 			}
-
-			int index = filePath.lastIndexOf(".");
-
 			if (index > 0) {
 				String fileFormat = filePath.substring(index, filePath.length()).toLowerCase();
-
 				if (fileFormat.equals(".xlsx") || fileFormat.equals(".xlsm") || fileFormat.equals(".xls")
 						|| fileFormat.equals(".xlt") || fileFormat.equals(".csv") || fileFormat.equals(".xml")
 						|| fileFormat.equals(".log") || fileFormat.equals(".txt") || fileFormat.equals(".docx")
 						|| fileFormat.equals(".doc")) {
 					openFile(filePath);
 				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Please select a valid file!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
 			}
 		}
 	}

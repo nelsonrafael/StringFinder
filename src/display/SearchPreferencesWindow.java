@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -26,12 +27,16 @@ public class SearchPreferencesWindow implements ActionListener, ItemListener {
 
 	private JDialog dialog;
 
+	private JFrame parentFrame;
+
 	private JPanel mainPanel, checkBoxesPanel, buttonsPanel;
 
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 
-	public SearchPreferencesWindow() {
+	public SearchPreferencesWindow(JFrame parentFrame) {
+		this.parentFrame = parentFrame;
+
 		dialog = new JDialog();
 		mainPanel = new JPanel();
 		checkBoxesPanel = new JPanel();
@@ -64,6 +69,8 @@ public class SearchPreferencesWindow implements ActionListener, ItemListener {
 	}
 
 	public void startGUI() {
+		dialog.setLocationRelativeTo(parentFrame);
+
 		searchSubFoldersCheckBox.setSelected(searchSubFolders);
 		caseSensitiveCheckBox.setSelected(caseSensitive);
 
@@ -76,10 +83,10 @@ public class SearchPreferencesWindow implements ActionListener, ItemListener {
 	private void windowOptions() {
 		dialog.setModal(true);
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		dialog.setTitle("Search Preferences");
 		dialog.setPreferredSize(new Dimension(200, 200));
-		dialog.setLocationRelativeTo(null);
 		dialog.pack();
-		dialog.setLocation(0, 0);
+		dialog.setLocationRelativeTo(parentFrame);
 		dialog.setVisible(false);
 	}
 

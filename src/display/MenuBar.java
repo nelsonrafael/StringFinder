@@ -3,9 +3,11 @@ package display;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
@@ -22,11 +24,18 @@ public class MenuBar extends JMenuBar implements ActionListener {
 	private JMenuItem helpItem = new JMenuItem("Help Contents");
 	private JMenuItem aboutItem = new JMenuItem("About StringFinder");
 
-	private SearchPreferencesWindow searchPreferences = new SearchPreferencesWindow();
+	private SearchPreferencesWindow searchPreferences;
 
-	private FilePreferencesWindow filePreferences = new FilePreferencesWindow();
+	private FilePreferencesWindow filePreferences;
 
-	public MenuBar() {
+	private JFrame parentFrame;
+
+	public MenuBar(JFrame parentFrame) {
+		this.parentFrame = parentFrame;
+
+		searchPreferences = new SearchPreferencesWindow(parentFrame);
+		filePreferences = new FilePreferencesWindow(parentFrame);
+
 		optionsMenu.add(filePreferencesItem);
 		optionsMenu.add(searchPreferencesItem);
 
@@ -59,7 +68,9 @@ public class MenuBar extends JMenuBar implements ActionListener {
 		} else if (e.getSource() == helpItem) {
 			// TODO
 		} else if (e.getSource() == aboutItem) {
-			// TODO
+			JOptionPane.showMessageDialog(this.parentFrame,
+					"Version: 0.2.1\n© 2019 Nélson Rafael Martins All Rights Reserverd", "About String Finder",
+					JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 

@@ -14,12 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-public class FilePreferencesWindow extends JFrame implements ActionListener, ItemListener {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class FilePreferencesWindow implements ActionListener, ItemListener {
 
 	private boolean searchXLSX = true;
 	private boolean searchXLSM = true;
@@ -56,12 +51,16 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 
 	private JDialog dialog;
 
+	private JFrame parentFrame;
+
 	private JPanel mainPanel, checkBoxesPanel, buttonsPanel;
 
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 
-	public FilePreferencesWindow() {
+	public FilePreferencesWindow(JFrame parentframe) {
+		this.parentFrame = parentframe;
+
 		dialog = new JDialog();
 		mainPanel = new JPanel();
 		checkBoxesPanel = new JPanel();
@@ -118,6 +117,8 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 	}
 
 	public void startGUI() {
+		dialog.setLocationRelativeTo(parentFrame);
+
 		searchXLSXCheckBox.setSelected(searchXLSX);
 		searchXLSMCheckBox.setSelected(searchXLSM);
 		searchXLSCheckBox.setSelected(searchXLS);
@@ -146,10 +147,10 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 	private void windowOptions() {
 		dialog.setModal(true);
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		dialog.setTitle("File Preferences");
 		dialog.setPreferredSize(new Dimension(200, 400));
-		dialog.setLocationRelativeTo(null);
 		dialog.pack();
-		dialog.setLocation(0, 0);
+		dialog.setLocationRelativeTo(parentFrame);
 		dialog.setVisible(false);
 	}
 
