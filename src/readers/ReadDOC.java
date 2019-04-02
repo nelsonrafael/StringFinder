@@ -14,57 +14,35 @@ public class ReadDOC {
 		this.path = p;
 	}
 
-	public boolean findString(String s, boolean cs) {
-
-		File file = null;
-
-		WordExtractor extractor = null;
-
-		try {
-
-			file = new File(path);
-
-			FileInputStream inputStream = new FileInputStream(file.getAbsolutePath());
-
-			HWPFDocument document = new HWPFDocument(inputStream);
-
-			extractor = new WordExtractor(document);
-
-			String[] fileData = extractor.getParagraphText();
-
-			for (int i = 0; i < fileData.length; i++) {
-
-				if (fileData[i] != null) {
-					if (cs) {
-
-						if (fileData[i].contains(s)) {
-
-							document.close();
-							inputStream.close();
-							return true;
-
-						}
-
-					} else {
-
-						if (fileData[i].toLowerCase().contains(s.toLowerCase())) {
-
-							document.close();
-							inputStream.close();
-							return true;
-
-						}
+	public boolean findString(String s, boolean cs) throws Exception {
+		File file = new File(path);
+		FileInputStream inputStream = new FileInputStream(file.getAbsolutePath());
+		HWPFDocument document = new HWPFDocument(inputStream);
+		WordExtractor extractor = new WordExtractor(document);
+		String[] fileData = extractor.getParagraphText();
+		for (int i = 0; i < fileData.length; i++) {
+			if (fileData[i] != null) {
+				if (cs) {
+					if (fileData[i].contains(s)) {
+						extractor.close();
+						document.close();
+						inputStream.close();
+						return true;
+					}
+				} else {
+					if (fileData[i].toLowerCase().contains(s.toLowerCase())) {
+						extractor.close();
+						document.close();
+						inputStream.close();
+						return true;
 					}
 				}
-
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-
+		extractor.close();
+		document.close();
+		inputStream.close();
 		return false;
-
 	}
 
 }

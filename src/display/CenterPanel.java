@@ -38,27 +38,23 @@ public class CenterPanel extends JPanel {
 		add(scrollPane);
 	}
 
-	public String getCurrentNode() {
+	public String getCurrentNode() throws Exception {
 		String result = "";
 
 		TreePath currentSelection = tree.getSelectionPath();
 
-		try {
-			result = currentSelection.toString();
+		result = currentSelection.toString();
 
-			String[] parts = result.split(",");
-			result = "";
+		String[] parts = result.split(",");
+		result = "";
 
-			for (int i = 1; i < parts.length; i++) {
-				String temp = parts[i].trim();
-				result += temp;
-				if (i < parts.length - 1)
-					result += "\\";
-				else
-					result = result.substring(0, result.length() - 1);
-			}
-		} catch (NullPointerException e) {
-			System.out.println("ERROR CenerPanel - NullPointerException");
+		for (int i = 1; i < parts.length; i++) {
+			String temp = parts[i].trim();
+			result += temp;
+			if (i < parts.length - 1)
+				result += "\\";
+			else
+				result = result.substring(0, result.length() - 1);
 		}
 
 		return result;

@@ -22,6 +22,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 	private static final long serialVersionUID = 1L;
 
 	private boolean searchXLSX = true;
+	private boolean searchXLSM = true;
 	private boolean searchXLS = false;
 	private boolean searchXLT = true;
 	private boolean searchXML = true;
@@ -32,6 +33,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 	private boolean searchDOC = true;
 
 	private boolean oldSearchXLSX = true;
+	private boolean oldSearchXLSM = true;
 	private boolean oldSearchXLS = false;
 	private boolean oldSearchXLT = true;
 	private boolean oldSearchXML = true;
@@ -42,6 +44,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 	private boolean oldSearchDOC = true;
 
 	private JCheckBox searchXLSXCheckBox = new JCheckBox("XLSX");
+	private JCheckBox searchXLSMCheckBox = new JCheckBox("XLSM");
 	private JCheckBox searchXLSCheckBox = new JCheckBox("XLS");
 	private JCheckBox searchXLTCheckBox = new JCheckBox("XLT");
 	private JCheckBox searchXMLCheckBox = new JCheckBox("XML");
@@ -64,8 +67,9 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 		checkBoxesPanel = new JPanel();
 		buttonsPanel = new JPanel();
 
-		checkBoxesPanel.setLayout(new GridLayout(9, 1));
+		checkBoxesPanel.setLayout(new GridLayout(10, 1));
 		checkBoxesPanel.add(searchXLSXCheckBox);
+		checkBoxesPanel.add(searchXLSMCheckBox);
 		checkBoxesPanel.add(searchXLSCheckBox);
 		checkBoxesPanel.add(searchXLTCheckBox);
 		checkBoxesPanel.add(searchXMLCheckBox);
@@ -86,6 +90,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 		dialog.add(mainPanel);
 
 		searchXLSXCheckBox.setSelected(searchXLSX);
+		searchXLSMCheckBox.setSelected(searchXLSM);
 		searchXLSCheckBox.setSelected(searchXLS);
 		searchXLTCheckBox.setSelected(searchXLT);
 		searchXMLCheckBox.setSelected(searchXML);
@@ -96,6 +101,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 		searchDOCCheckBox.setSelected(searchDOC);
 
 		searchXLSXCheckBox.addItemListener(this);
+		searchXLSMCheckBox.addItemListener(this);
 		searchXLSCheckBox.addItemListener(this);
 		searchXLTCheckBox.addItemListener(this);
 		searchXMLCheckBox.addItemListener(this);
@@ -113,6 +119,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 
 	public void startGUI() {
 		searchXLSXCheckBox.setSelected(searchXLSX);
+		searchXLSMCheckBox.setSelected(searchXLSM);
 		searchXLSCheckBox.setSelected(searchXLS);
 		searchXLTCheckBox.setSelected(searchXLT);
 		searchXMLCheckBox.setSelected(searchXML);
@@ -123,6 +130,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 		searchDOCCheckBox.setSelected(searchDOC);
 
 		searchXLSX = oldSearchXLSX;
+		searchXLSM = oldSearchXLSM;
 		searchXLS = oldSearchXLS;
 		searchXLT = oldSearchXLT;
 		searchXML = oldSearchXML;
@@ -147,6 +155,10 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 
 	public boolean getSearchXLSX() {
 		return this.searchXLSX;
+	}
+
+	public boolean getSearchXLSM() {
+		return this.searchXLSM;
 	}
 
 	public boolean getSearchXLS() {
@@ -186,6 +198,8 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 		Object source = e.getItemSelectable();
 		if (source == searchXLSXCheckBox) {
 			searchXLSX = !searchXLSX;
+		} else if (source == searchXLSMCheckBox) {
+			searchXLSM = !searchXLSM;
 		} else if (source == searchXLSCheckBox) {
 			searchXLS = !searchXLS;
 		} else if (source == searchXLTCheckBox) {
@@ -210,6 +224,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 		Object source = e.getSource();
 		if (source == okButton) {
 			oldSearchXLSX = searchXLSX;
+			oldSearchXLSM = searchXLSM;
 			oldSearchXLS = searchXLS;
 			oldSearchXLT = searchXLT;
 			oldSearchXML = searchXML;
@@ -221,6 +236,7 @@ public class FilePreferencesWindow extends JFrame implements ActionListener, Ite
 			dialog.dispose();
 		} else if (source == cancelButton) {
 			searchXLSX = oldSearchXLSX;
+			searchXLSM = oldSearchXLSM;
 			searchXLS = oldSearchXLS;
 			searchXLT = oldSearchXLT;
 			searchXML = oldSearchXML;

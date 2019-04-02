@@ -2,9 +2,7 @@ package readers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class ReadTXT {
 
@@ -14,28 +12,25 @@ public class ReadTXT {
 		this.path = p;
 	}
 
-	public boolean findString(String s, boolean cs) {
+	public boolean findString(String s, boolean cs) throws Exception {
 		File inputFile = new File(path);
-		try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				if (cs) {
-					if (line.contains(s)) {
-						return true;
-					}
-				} else {
-					if (line.toLowerCase().contains(s.toLowerCase())) {
-						return true;
-					}
+		BufferedReader br = new BufferedReader(new FileReader(inputFile));
+		String line;
+		while ((line = br.readLine()) != null) {
+			if (cs) {
+				if (line.contains(s)) {
+					br.close();
+					return true;
+				}
+			} else {
+				if (line.toLowerCase().contains(s.toLowerCase())) {
+					br.close();
+					return true;
 				}
 			}
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR ReadTXT - FileNotFoundException - " + this.path);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		br.close();
 		return false;
 	}
-	
+
 }

@@ -15,48 +15,28 @@ public class ReadDOCX {
 		this.path = p;
 	}
 
-	public boolean findString(String s, boolean cs) {
-
-		try {
-			File file = new File(path);
-
-			FileInputStream inputStream = new FileInputStream(file.getAbsolutePath());
-
-			XWPFDocument document = new XWPFDocument(inputStream);
-
-			List<XWPFParagraph> paragraphs = document.getParagraphs();
-
-			for (XWPFParagraph para : paragraphs) {
-
-				if (cs) {
-
-					if (para.getText().contains(s)) {
-
-						document.close();
-						inputStream.close();
-						return true;
-
-					}
-
-				} else {
-
-					if (para.getText().toLowerCase().contains(s.toLowerCase())) {
-
-						document.close();
-						inputStream.close();
-						return true;
-
-					}
+	public boolean findString(String s, boolean cs) throws Exception {
+		File file = new File(path);
+		FileInputStream inputStream = new FileInputStream(file.getAbsolutePath());
+		XWPFDocument document = new XWPFDocument(inputStream);
+		List<XWPFParagraph> paragraphs = document.getParagraphs();
+		for (XWPFParagraph para : paragraphs) {
+			if (cs) {
+				if (para.getText().contains(s)) {
+					document.close();
+					inputStream.close();
+					return true;
+				}
+			} else {
+				if (para.getText().toLowerCase().contains(s.toLowerCase())) {
+					document.close();
+					inputStream.close();
+					return true;
 				}
 			}
-
-			document.close();
-			inputStream.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		document.close();
+		inputStream.close();
 		return false;
 	}
-
 }
